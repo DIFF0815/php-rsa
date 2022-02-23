@@ -47,3 +47,20 @@ $check = $rsaTool->publicKeyVerify($dataJson,$sign);
 echo "公钥验签验证：".$check.PHP_EOL;*/
 
 ```
+
+
+## 生成rsa对称加密key
+当 openssl 安装完毕后，我们就可以开始生成私钥、公钥了。
+
+* 首先，生成原始 RSA 私钥文件
+openssl genrsa -out rsa_private_key.pem 1024
+注：这里生成了一个长度为 1024bit 的密钥，转化为字节就是 128byte
+
+* 其次，将原始 RSA 私钥转换为 pkcs8 格式
+openssl pkcs8 -topk8 -inform PEM -in rsa_private_key.pem -outform PEM -nocrypt -out private_key.pem
+
+* 最后，生成 RSA 公钥
+openssl rsa -in rsa_private_key.pem -pubout -out rsa_public_key.pem
+在需要使用的时候，我们将私钥 rsa_private_key.pem 放在服务器端，公钥发放给需要与我们进行加密通信的一方就可以了。
+
+
